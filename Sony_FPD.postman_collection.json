@@ -1,0 +1,513 @@
+{
+	"info": {
+		"_postman_id": "bbbb86cc-a0ce-47e8-8a5a-a16e49f1863f",
+		"name": "Sony FPD Microservice",
+		"description": "A collection of all possible GET and PUT calls for the Sony FPD microservice. You can replace the values in double curly brackets manually or create matching environment variables that will automatically fill in the values.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10379859"
+	},
+	"item": [
+		{
+			"name": "SET Power",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"off\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/power",
+					"protocol": "http",
+					"host": [
+						"{{microserviceURL}}"
+					],
+					"path": [
+						"{{deviceFQDN}}",
+						"power"
+					]
+				},
+				"description": "This request turns the display on or off. It accepts either \"on\" or \"off\" in the body."
+			},
+			"response": [
+				{
+					"name": "SET Power",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\"off\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/power",
+							"protocol": "http",
+							"host": [
+								"{{microserviceURL}}"
+							],
+							"path": [
+								"{{deviceFQDN}}",
+								"power"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "\"ok\""
+				}
+			]
+		},
+		{
+			"name": "SET Videoroute",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"1\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/videoroute/1",
+					"protocol": "http",
+					"host": [
+						"{{microserviceURL}}"
+					],
+					"path": [
+						"{{deviceFQDN}}",
+						"videoroute",
+						"1"
+					]
+				},
+				"description": "This request changes the input that the display is routed to. It accepts a number in the body corresponding to an input for the display. For ex: \"1\".  \nThe 1 in the path is necessary for the call to function, but does not do anything. It could be any number."
+			},
+			"response": [
+				{
+					"name": "SET Videoroute",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\"1\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/videoroute/1",
+							"protocol": "http",
+							"host": [
+								"{{microserviceURL}}"
+							],
+							"path": [
+								"{{deviceFQDN}}",
+								"videoroute",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "\"ok\""
+				}
+			]
+		},
+		{
+			"name": "SET Volume",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"30\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/volume/1",
+					"protocol": "http",
+					"host": [
+						"{{microserviceURL}}"
+					],
+					"path": [
+						"{{deviceFQDN}}",
+						"volume",
+						"1"
+					]
+				},
+				"description": "This request sets the volume of the display to a specific value. It accepts any number between 0 and 100 in the body.  \nThe 1 in the path is necessary for the call to function, but does not do anything. It could be any number."
+			},
+			"response": [
+				{
+					"name": "SET Volume",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\"30\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/volume/1",
+							"protocol": "http",
+							"host": [
+								"{{microserviceURL}}"
+							],
+							"path": [
+								"{{deviceFQDN}}",
+								"volume",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "\"ok\""
+				}
+			]
+		},
+		{
+			"name": "SET Audiomute",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"false\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/audiomute/1",
+					"protocol": "http",
+					"host": [
+						"{{microserviceURL}}"
+					],
+					"path": [
+						"{{deviceFQDN}}",
+						"audiomute",
+						"1"
+					]
+				},
+				"description": "This request mutes or unmutes the display. It accepts \"true\" or \"false\" in the body.  \nThe 1 in the path is necessary for the call to function, but does not do anything. It could be any number."
+			},
+			"response": [
+				{
+					"name": "SET Audiomute",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\"false\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/audiomute/1",
+							"protocol": "http",
+							"host": [
+								"{{microserviceURL}}"
+							],
+							"path": [
+								"{{deviceFQDN}}",
+								"audiomute",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "\"ok\""
+				}
+			]
+		},
+		{
+			"name": "GET Power",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/power",
+					"protocol": "http",
+					"host": [
+						"{{microserviceURL}}"
+					],
+					"path": [
+						"{{deviceFQDN}}",
+						"power"
+					]
+				},
+				"description": "This request returns the display's power status as \"on\" or \"off\"."
+			},
+			"response": [
+				{
+					"name": "GET Power",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/power",
+							"protocol": "http",
+							"host": [
+								"{{microserviceURL}}"
+							],
+							"path": [
+								"{{deviceFQDN}}",
+								"power"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "\"on\""
+				}
+			]
+		},
+		{
+			"name": "GET Videoroute",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/videoroute",
+					"protocol": "http",
+					"host": [
+						"{{microserviceURL}}"
+					],
+					"path": [
+						"{{deviceFQDN}}",
+						"videoroute"
+					]
+				},
+				"description": "This request returns the number of the input that the display is routed to. For ex: \"1\""
+			},
+			"response": [
+				{
+					"name": "GET Videoroute",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/videoroute",
+							"protocol": "http",
+							"host": [
+								"{{microserviceURL}}"
+							],
+							"path": [
+								"{{deviceFQDN}}",
+								"videoroute"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "\"1\""
+				}
+			]
+		},
+		{
+			"name": "GET Volume",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/volume",
+					"protocol": "http",
+					"host": [
+						"{{microserviceURL}}"
+					],
+					"path": [
+						"{{deviceFQDN}}",
+						"volume"
+					]
+				},
+				"description": "This request returns the current display volume as a number between \"0\" and \"100\"."
+			},
+			"response": [
+				{
+					"name": "GET Volume",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/volume",
+							"protocol": "http",
+							"host": [
+								"{{microserviceURL}}"
+							],
+							"path": [
+								"{{deviceFQDN}}",
+								"volume"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "\"30\""
+				}
+			]
+		},
+		{
+			"name": "GET Audiomute",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/audiomute",
+					"protocol": "http",
+					"host": [
+						"{{microserviceURL}}"
+					],
+					"path": [
+						"{{deviceFQDN}}",
+						"audiomute"
+					]
+				},
+				"description": "This request returns whether the display is muted or unmuted as \"true\" or \"false\"."
+			},
+			"response": [
+				{
+					"name": "GET Audiomute",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{microserviceURL}}/{{deviceFQDN}}/audiomute",
+							"protocol": "http",
+							"host": [
+								"{{microserviceURL}}"
+							],
+							"path": [
+								"{{deviceFQDN}}",
+								"audiomute"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "\"false\""
+				}
+			]
+		}
+	]
+}
