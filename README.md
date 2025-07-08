@@ -6,6 +6,8 @@ Sony flat panel displays are high-quality professional monitors widely used in v
 
 [Sony Flat Panel Display](https://pro.sony/ue_US/products/pro-displays/fw-55bz40l)
 
+[Microservice curl test documentation](https://github.com/Dartmouth-OpenAV/documentation/blob/main/curl_test_readme.md)
+
 ![](https://github.com/Dartmouth-OpenAV/microservice-sony-fpd/blob/main/front.png)
 
 ![](https://github.com/Dartmouth-OpenAV/microservice-sony-fpd/blob/main/rear.png)
