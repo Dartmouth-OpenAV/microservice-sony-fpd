@@ -4,17 +4,18 @@ interface map and an aborted attempt to use a JSON parser that seemed good at fi
 from the same simple code depending on whether it was running in a microservice or in a small function, we hit on the scheme used
 below.  We convert JSON received from a Bravia to a struct using this tool:
 https://mholt.github.io/json-to-go/
-Then we unmarshal into that struct and access the elements via the struct type.  This seems to work well, and even better new 
+Then we unmarshal into that struct and access the elements via the struct type.  This seems to work well, and even better new
 elements in the JSON appear to be ignored by json.Unmarshal(). */
 
 package main
 
 import (
-	"fmt"
-	"errors"
-	"strings"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"strings"
 	"time"
+
 	"github.com/Dartmouth-OpenAV/microservice-framework/framework"
 )
 
@@ -28,7 +29,7 @@ func getAudioMute(socketKey string, output string) (string, error) {
 	volume = volume // appease golang parser
 	return mute, err
 }
-	
+
 func setAudioMute(socketKey string, output string, mute string) (string, error) {
 	function := "setAudioMute"
 	var err error
@@ -36,14 +37,14 @@ func setAudioMute(socketKey string, output string, mute string) (string, error) 
 
 	framework.Log(function + " - called for: " + socketKey)
 
-	mute = strings.Trim(mute, `"`)  // trim quotes off JSON body input string
+	mute = strings.Trim(mute, `"`) // trim quotes off JSON body input string
 
 	if mute == "toggle" {
 		framework.Log("AAAAAA calling getAudioMute()")
 		currentMute, err := getAudioMute(socketKey, output)
 		framework.Log("AAAAAA back from calling getAudioMute()")
 		if err != nil {
-			errMsg := fmt.Sprintf(function + " - vaev234 error getting current mute state for toggle: " + currentMute + " and error %v", err)
+			errMsg := fmt.Sprintf(function+" - vaev234 error getting current mute state for toggle: "+currentMute+" and error %v", err)
 			framework.Log(errMsg)
 			return errMsg, errors.New("POST error")
 		}
@@ -59,11 +60,11 @@ func setAudioMute(socketKey string, output string, mute string) (string, error) 
 	}
 
 	maxRetries := 2
-	for( maxRetries>0 ) {
+	for maxRetries > 0 {
 		framework.Log("AAAAA doing post to set mute: " + mute)
 		bodyStr, err = framework.DoPost(socketKey, "sony/audio",
-			`{"method":"setAudioMute", "id":601, "params":[{"status":`+ mute + `}], "version":"1.0"}`)
-		if( err != nil || strings.Contains(bodyStr, "Display Is Turned off")) {  // Something went wrong - perhaps try again
+			`{"method":"setAudioMute", "id":601, "params":[{"status":`+mute+`}], "version":"1.0"}`)
+		if err != nil || strings.Contains(bodyStr, "Display Is Turned off") { // Something went wrong - perhaps try again
 			maxRetries--
 			if maxRetries != 0 {
 				if strings.Contains(bodyStr, "Display Is Turned off") {
@@ -71,17 +72,17 @@ func setAudioMute(socketKey string, output string, mute string) (string, error) 
 				} else {
 					framework.Log("POST failed, got: " + bodyStr + " retrying")
 				}
-			} 
-			time.Sleep( time.Second )
-		} else {  // Succeeded
+			}
+			time.Sleep(time.Second)
+		} else { // Succeeded
 			maxRetries = 0
 		}
 	}
-	if err != nil {  // still have an error - report this
-		errMsg := fmt.Sprintf(function + " - vasd234 error doing post, got response: " + bodyStr + " and error %v", err)
+	if err != nil { // still have an error - report this
+		errMsg := fmt.Sprintf(function+" - vasd234 error doing post, got response: "+bodyStr+" and error %v", err)
 		return errMsg, errors.New("POST error")
 	}
-	framework.Log(function + " - 5i76fg got: " +  bodyStr + " back from post to: " + socketKey)
+	framework.Log(function + " - 5i76fg got: " + bodyStr + " back from post to: " + socketKey)
 
 	// The Bravia REST API doesn't return any confirmation of the state, so since we didn't get an error, we're done
 	return `"ok"`, nil
@@ -97,18 +98,18 @@ func getVolume(socketKey string, name string) (string, error) {
 }
 
 func getVolumeAndMute(socketKey string, name string) (string, string, error) {
-		function := "getVolumeAndMute"
-		framework.Log(function + " - called for: " + socketKey)
+	function := "getVolumeAndMute"
+	framework.Log(function + " - called for: " + socketKey)
 	var err error
 	var bodyStr string
 
 	bodyStr, err = framework.DoPost(socketKey, "sony/audio",
-	`{"method":"getVolumeInformation", "id":33, "params":[], "version":"1.0"}`)
+		`{"method":"getVolumeInformation", "id":33, "params":[], "version":"1.0"}`)
 	if err != nil {
-		errMsg := fmt.Sprintf(function + " - iohnlk879 error doing post, got response: " + bodyStr + " and error %v", err)
+		errMsg := fmt.Sprintf(function+" - iohnlk879 error doing post, got response: "+bodyStr+" and error %v", err)
 		return errMsg, errMsg, errors.New("POST error")
 	}
-	framework.Log(function + " - kpbj76 got: " +  bodyStr + " back from post to: " + socketKey)
+	framework.Log(function + " - kpbj76 got: " + bodyStr + " back from post to: " + socketKey)
 
 	volume, mute, err := parseVolumeAndMute(bodyStr)
 	if err != nil {
@@ -119,9 +120,9 @@ func getVolumeAndMute(socketKey string, name string) (string, string, error) {
 
 	return `"` + volume + `"`, `"` + mute + `"`, nil
 }
-	
+
 func parseVolumeAndMute(jsonStr string) (string, string, error) {
-	function := "parseVolume"
+	function := "parseVolumeAndMute"
 
 	// Responses look like:
 	//    {"result":[[{"target":"speaker","volume":35,"mute":false,"maxVolume":100,"minVolume":0}]],"id":33}
@@ -146,7 +147,7 @@ func parseVolumeAndMute(jsonStr string) (string, string, error) {
 		ID int `json:"id"`
 	}
 
-	if strings.Contains(jsonStr, "error") { 
+	if strings.Contains(jsonStr, "error") {
 		resp := &errorStruct{}
 		err := json.Unmarshal([]byte(jsonStr), resp)
 		errorNum := -999.0
@@ -156,10 +157,10 @@ func parseVolumeAndMute(jsonStr string) (string, string, error) {
 			errorStr = resp.Error[1].(string)
 		}
 		if errorNum == 40005.0 { // Not really an error condition that the device is off: return "unknown"
-			framework.Log(function + " - returning unknown videoroute because power is off")
+			framework.Log(function + " - returning 0 volume and unknown mute because power is off")
 			return "0", "unknown", nil
-		} else {  // Got an actual error
-			errMsg := fmt.Sprintf(function + " - lihil89 Sony returned error string: %v number: %.f: ", errorStr, errorNum)
+		} else { // Got an actual error
+			errMsg := fmt.Sprintf(function+" - lihil89 Sony returned error string: %v number: %.f: ", errorStr, errorNum)
 			framework.Log(errMsg)
 			return errMsg, errMsg, errors.New("Sony error")
 		}
@@ -191,7 +192,7 @@ func parseVolumeAndMute(jsonStr string) (string, string, error) {
 	framework.Log(function + " - returning volume: " + volumeStr + " mute: " + muteStr)
 	return volumeStr, muteStr, nil
 }
-	
+
 func setVolume(socketKey string, output string, volume string) (string, error) {
 	function := "setVolume"
 	var err error
@@ -199,7 +200,7 @@ func setVolume(socketKey string, output string, volume string) (string, error) {
 
 	framework.Log(function + " - called for: " + socketKey)
 
-	volume = strings.Trim(volume, `"`)  // trim quotes off JSON body input string 
+	volume = strings.Trim(volume, `"`) // trim quotes off JSON body input string
 	if volume == "up" {
 		volume = "+5"
 	} else if volume == "down" {
@@ -207,12 +208,12 @@ func setVolume(socketKey string, output string, volume string) (string, error) {
 	}
 	// if neither "up" or "down", then pass through the numeric value
 	maxRetries := 2
-	for( maxRetries>0 ) {
+	for maxRetries > 0 {
 		framework.Log("AAAAA doing post to set volume: " + volume)
 		bodyStr, err = framework.DoPost(socketKey, "sony/audio",
-		`{"method":"setAudioVolume", "id":98, "params":[{"volume": "` + volume + `", "ui":"on", "target":""}], "version":"1.0"}`)
-	
-		if( err != nil || strings.Contains(bodyStr, "Display Is Turned off")) {  // Something went wrong - perhaps try again
+			`{"method":"setAudioVolume", "id":98, "params":[{"volume": "`+volume+`", "ui":"on", "target":""}], "version":"1.0"}`)
+
+		if err != nil || strings.Contains(bodyStr, "Display Is Turned off") { // Something went wrong - perhaps try again
 			maxRetries--
 			if maxRetries != 0 {
 				if strings.Contains(bodyStr, "Display Is Turned off") {
@@ -220,18 +221,18 @@ func setVolume(socketKey string, output string, volume string) (string, error) {
 				} else {
 					framework.Log("POST failed, got: " + bodyStr + " retrying")
 				}
-				time.Sleep( time.Second )
-			} 
-		} else {  // Succeeded
+				time.Sleep(time.Second)
+			}
+		} else { // Succeeded
 			maxRetries = 0
 		}
 	}
 
-	if err != nil {  // still have an error - report this
-		errMsg := fmt.Sprintf(function + " - qf3svd error doing post, got response: " + bodyStr + " and error %v", err)
+	if err != nil { // still have an error - report this
+		errMsg := fmt.Sprintf(function+" - qf3svd error doing post, got response: "+bodyStr+" and error %v", err)
 		return errMsg, errors.New("POST error")
 	}
-	framework.Log(function + " - 4hnfs got: " +  bodyStr + " back from post to: " + socketKey)
+	framework.Log(function + " - 4hnfs got: " + bodyStr + " back from post to: " + socketKey)
 
 	// The Bravia REST API doesn't return any confirmation of the state, so since we didn't get an error, we're done
 	return `"ok"`, nil
@@ -244,12 +245,12 @@ func getVideoRoute(socketKey string, output string) (string, error) {
 
 	framework.Log(function + " - called for: " + socketKey)
 	bodyStr, err = framework.DoPost(socketKey, "sony/avContent",
-	`{"method":"getPlayingContentInfo", "id":103, "params":[], "version":"1.0"}`)
+		`{"method":"getPlayingContentInfo", "id":103, "params":[], "version":"1.0"}`)
 	if err != nil {
-		errMsg := fmt.Sprintf(function + " - 8j;alknf8 error doing post, got response: " + bodyStr + " and error %v", err)
+		errMsg := fmt.Sprintf(function+" - 8j;alknf8 error doing post, got response: "+bodyStr+" and error %v", err)
 		return errMsg, errors.New("POST error")
 	}
-	framework.Log(function + " - lkkjr32 got: " +  bodyStr + " back from post to: " + socketKey)
+	framework.Log(function + " - lkkjr32 got: " + bodyStr + " back from post to: " + socketKey)
 
 	input, err := parseVideoRoute(bodyStr)
 	if err != nil {
@@ -285,7 +286,7 @@ func parseVideoRoute(jsonStr string) (string, error) {
 		ID int `json:"id"`
 	}
 
-	if strings.Contains(jsonStr, "error") { 
+	if strings.Contains(jsonStr, "error") {
 		resp := &errorStruct{}
 		err := json.Unmarshal([]byte(jsonStr), resp)
 		errorNum := -999.0
@@ -297,8 +298,8 @@ func parseVideoRoute(jsonStr string) (string, error) {
 		if errorNum == 40005.0 { // Not really an error condition that the device is off: return "unknown"
 			framework.Log(function + " - returning unknown videoroute because power is off")
 			return "unknown", nil
-		} else {  // Got an actual error
-			errMsg := fmt.Sprintf(function + " - w4gsdb Sony returned error string: %v number: %.f: ", errorStr, errorNum)
+		} else { // Got an actual error
+			errMsg := fmt.Sprintf(function+" - w4gsdb Sony returned error string: %v number: %.f: ", errorStr, errorNum)
 			framework.Log(errMsg)
 			return errMsg, errors.New("Sony error")
 		}
@@ -315,7 +316,7 @@ func parseVideoRoute(jsonStr string) (string, error) {
 		framework.Log("########### unmarshaled uri: " + uri)
 	}
 
-	input := strings.Split(uri, "=")[1]  // should only be one "="
+	input := strings.Split(uri, "=")[1] // should only be one "="
 
 	framework.Log(function + " - returning input: " + input)
 	return input, nil
@@ -328,14 +329,14 @@ func setVideoRoute(socketKey string, output string, input string) (string, error
 
 	framework.Log(function + " - called for: " + socketKey)
 
-	input = strings.Trim(input, `"`)  // trim quotes off JSON body input string 
-	maxRetries := 15 // increasing this to see if it helps in the huddle spaces setting the correct input on power up
-	for( maxRetries>0 ) {
+	input = strings.Trim(input, `"`) // trim quotes off JSON body input string
+	maxRetries := 15                 // increasing this to see if it helps in the huddle spaces setting the correct input on power up
+	for maxRetries > 0 {
 		framework.Log("AAAAA doing post to set video route: " + input)
 		bodyStr, err = framework.DoPost(socketKey, "sony/avContent",
-		`{"method":"setPlayContent", "id":101, "params":[{"uri": "extInput:hdmi?port=` + input + `"}], "version":"1.0"}`)
-		
-		if( err != nil || strings.Contains(bodyStr, "Display Is Turned off")) {  // Something went wrong - perhaps try again
+			`{"method":"setPlayContent", "id":101, "params":[{"uri": "extInput:hdmi?port=`+input+`"}], "version":"1.0"}`)
+
+		if err != nil || strings.Contains(bodyStr, "Display Is Turned off") { // Something went wrong - perhaps try again
 			maxRetries--
 			if maxRetries != 0 {
 				if strings.Contains(bodyStr, "Display Is Turned off") {
@@ -343,18 +344,18 @@ func setVideoRoute(socketKey string, output string, input string) (string, error
 				} else {
 					framework.Log("POST failed, got: " + bodyStr + " retrying")
 				}
-				time.Sleep( time.Second )
-			} 
-		} else {  // Succeeded
+				time.Sleep(time.Second)
+			}
+		} else { // Succeeded
 			maxRetries = 0
 		}
 	}
 
-	if err != nil {  // still have an error - report this
-		errMsg := fmt.Sprintf(function + " - warvd354 error doing post, got response: " + bodyStr + " and error %v", err)
+	if err != nil { // still have an error - report this
+		errMsg := fmt.Sprintf(function+" - warvd354 error doing post, got response: "+bodyStr+" and error %v", err)
 		return errMsg, errors.New("POST error")
 	}
-	framework.Log(function + " - tn463df got: " +  bodyStr + " back from post to: " + socketKey)
+	framework.Log(function + " - tn463df got: " + bodyStr + " back from post to: " + socketKey)
 
 	// The Bravia REST API doesn't return any confirmation of the state, so since we didn't get an error, we're done
 	return `"ok"`, nil
@@ -367,12 +368,12 @@ func getPower(socketKey string) (string, error) {
 
 	framework.Log(function + " - called for: " + socketKey)
 	bodyStr, err = framework.DoPost(socketKey, "sony/system",
-	`{"method":"getPowerStatus", "id":50, "params":[], "version":"1.0"}`)
+		`{"method":"getPowerStatus", "id":50, "params":[], "version":"1.0"}`)
 	if err != nil {
-		errMsg := fmt.Sprintf(function + " - 43q2sdfa error doing post, got response: " + bodyStr + " and error %v", err)
+		errMsg := fmt.Sprintf(function+" - 43q2sdfa error doing post, got response: "+bodyStr+" and error %v", err)
 		return errMsg, errors.New("POST error")
 	}
-	framework.Log(function + " - lnk3;lk got: " +  bodyStr + " back from post to: " + socketKey)
+	framework.Log(function + " - lnk3;lk got: " + bodyStr + " back from post to: " + socketKey)
 
 	status, err := parsePowerStatus(bodyStr)
 	if err != nil {
@@ -389,11 +390,10 @@ func getPower(socketKey string) (string, error) {
 	return `"` + status + `"`, nil
 }
 
-
 func parsePowerStatus(jsonStr string) (string, error) {
 	function := "parsePowerStatus"
 	statusStr := "unknown"
-	
+
 	// Responses look like:
 	// {"result":[{"status":"standby"}],"id":50}
 
@@ -404,8 +404,8 @@ func parsePowerStatus(jsonStr string) (string, error) {
 			Status string `json:"status"`
 		} `json:"result"`
 		ID int `json:"id"`
-	} 
-		
+	}
+
 	resp := &powerStruct{}
 	err := json.Unmarshal([]byte(jsonStr), resp)
 	if err != nil {
@@ -434,13 +434,13 @@ func setPower(socketKey string, value string) (string, error) {
 		return errMsg, errors.New("invalid power value")
 	}
 
-	postBody := `{"method":"setPowerStatus", "id":55, "params":[{"status": `+ powerState + `}], "version":"1.0"}`
+	postBody := `{"method":"setPowerStatus", "id":55, "params":[{"status": ` + powerState + `}], "version":"1.0"}`
 	maxRetries := 2
-	for( maxRetries>0 ) {
+	for maxRetries > 0 {
 		framework.Log("AAAAA doing post to set power: " + powerState)
 		bodyStr, err = framework.DoPost(socketKey, "sony/system", postBody)
-		
-		if( err != nil || strings.Contains(bodyStr, "Display Is Turned off")) {  // Something went wrong - perhaps try again
+
+		if err != nil || strings.Contains(bodyStr, "Display Is Turned off") { // Something went wrong - perhaps try again
 			maxRetries--
 			if maxRetries != 0 {
 				if strings.Contains(bodyStr, "Display Is Turned off") {
@@ -448,18 +448,18 @@ func setPower(socketKey string, value string) (string, error) {
 				} else {
 					framework.Log("POST failed, got: " + bodyStr + " retrying")
 				}
-				time.Sleep( time.Second )
-			} 
-		} else {  // Succeeded
+				time.Sleep(time.Second)
+			}
+		} else { // Succeeded
 			maxRetries = 0
 		}
 	}
 
-	if err != nil {  // still have an error - report this
-		errMsg := fmt.Sprintf(function + " - 543efad error doing post, got response: " + bodyStr + " and error %v", err)
+	if err != nil { // still have an error - report this
+		errMsg := fmt.Sprintf(function+" - 543efad error doing post, got response: "+bodyStr+" and error %v", err)
 		return errMsg, errors.New("POST error")
 	}
-	framework.Log(function + " - lnnlkh787 got: " +  bodyStr + " back from post to: " + socketKey)
+	framework.Log(function + " - lnnlkh787 got: " + bodyStr + " back from post to: " + socketKey)
 
 	// The Bravia REST API doesn't return any confirmation of the state, so since we didn't get an error, we're done
 	return `"ok"`, nil
