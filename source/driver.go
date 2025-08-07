@@ -464,3 +464,29 @@ func setPower(socketKey string, value string) (string, error) {
 	// The Bravia REST API doesn't return any confirmation of the state, so since we didn't get an error, we're done
 	return `"ok"`, nil
 }
+
+func getSystemInformation(socketKey string) (string, error) {
+	function := "getSystemInformation"
+	var err error
+	var bodyStr string
+
+	framework.Log(function + " - called for: " + socketKey)
+	bodyStr, err = framework.DoPost(socketKey, "sony/system",
+		`{"method":"getSystemInformation", "id":50, "params":[], "version":"1.0"}`)
+	if err != nil {
+		errMsg := fmt.Sprintf(function+" - 43q2sdfa5 error doing post, got response: "+bodyStr+" and error %v", err)
+		return errMsg, errors.New("POST error")
+	}
+	framework.Log(function + " - lnk3;lk5 got: " + bodyStr + " back from post to: " + socketKey)
+
+	return `"` + bodyStr + `"`, nil
+}
+
+func healthCheck(socketKey string) (string, error) {
+	resp, err := getSystemInformation(socketKey)
+	returnStr := "true"
+	if err != nil && strings.Contains(resp, "error doing post") {
+		returnStr = "false"
+	}
+	return `"` + returnStr + `"`, nil
+}
