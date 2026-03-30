@@ -485,8 +485,20 @@ func getSystemInformation(socketKey string) (string, error) {
 func healthCheck(socketKey string) (string, error) {
 	resp, err := getSystemInformation(socketKey)
 	returnStr := "true"
-	if err != nil && strings.Contains(resp, "error doing post") {
+	if err != nil {
 		returnStr = "false"
+	} else {
+		// Parse the JSON response to extract model
+		var systemInfo struct {
+			Result []struct {
+				Model string `json:"model"`
+			} `json:"result"`
+		}
+
+		jsonStr := strings.Trim(resp, `"`)
+		if err := json.Unmarshal([]byte(jsonStr), &systemInfo); err == nil && len(systemInfo.Result) > 0 {
+			returnStr = returnStr + " model: " + systemInfo.Result[0].Model
+		}
 	}
 	return `"` + returnStr + `"`, nil
 }
